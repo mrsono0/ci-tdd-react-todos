@@ -26,10 +26,20 @@ const TodoApp_Boyaa = () => {
             })
         );
         nextId.current += 1;
-    });
+    }, [todos]);
+    const onToggle = useCallback(id => {
+        setTodos(
+            todos.map(todo => todo.id === id ? {...todo, done : !todo.done} : todo)
+        );
+    }, [todos]);
+    const onRemove = useCallback(id => {
+        setTodos(
+            todos.filter(todo => todo.id !== id) // filter : 같지 않은 id들 제거해준다
+        );
+    }, [todos]);
     return (<div>
         <TodoForm onInsert={onInsert}/>
-        <TodoList todos={todos} />
+        <TodoList todos={todos} onToggle={onToggle} onRemove={onRemove} />
     </div>);
 };
 

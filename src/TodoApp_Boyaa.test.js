@@ -1,6 +1,7 @@
 import React from "react";
-import { render, fireEvent } from '@testing-library/react';
-import TodoApp_Boyaa from './TodoApp_Boyaa';
+import { render, fireEvent, getByText } from '@testing-library/react';
+import TodoApp_Boyaa from "./TodoApp_Boyaa";
+
 
 describe('<TodoApp_Boyaa />', () => {
     it('renders TodoForm TodoList', () => {
@@ -21,4 +22,19 @@ describe('<TodoApp_Boyaa />', () => {
         fireEvent.click(getByText('등록'));
         getByText('새 항목 추가하기');
     });
+    it('toggle todo', () => {
+        const {getByText} = render(<TodoApp_Boyaa />);
+        const todoText = getByText('TDD 배우기');
+        expect(todoText).not.toHaveStyle('text-decoration: line-through;');
+        fireEvent.click(todoText);
+        expect(todoText).toHaveStyle('text-decoration: line-through;');
+    });
+
+    it('remove dodo', () => {
+        const {getByText} = render(<TodoApp_Boyaa />);
+        const todoText = getByText('TDD 배우기');
+        const removeButton = todoText.nextSibling;
+        fireEvent.click(removeButton);
+        expect(todoText).not.toBeInTheDocument();
+    })
 });
